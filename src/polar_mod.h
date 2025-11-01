@@ -1,9 +1,8 @@
 /*
  * Copyright 2025 Emiliano Gonzalez (egonzalez . hiperion @ gmail . com))
- * * Project Site: https://github.com/hiperiondev/esp32_fm_radio *
+ * * Project Site: https://github.com/hiperiondev/polar_modulator *
  *
  * This is based on other projects:
- *    ESP32 as FM radio transmitter: https://github.com/Alexxdal/ESP32FMRadio
  *    SSB/CW/FM signal generator 35 - 4400MHz: https://gitlab.com/dg6rs/polar
  *
  *    please contact their authors for more information.
@@ -33,6 +32,7 @@
 
 #ifndef POLAR_MOD_H_
 #define POLAR_MOD_H_
+
 #include <stdint.h>
 
 /**
@@ -132,7 +132,7 @@ typedef enum SPECIAL_MODULATION_E {
  * Enumeration defining pre-processing low-pass filter options for audio input.
  */
 typedef enum FILTERS_PRE_LP_E {
-    FILTER_NONE, /**< No low-pass filter. */
+    FILTER_LP_NONE, /**< No low-pass filter. */
     FILTER_LP_3000_2pol, /**< 2-pole low-pass at 3000 Hz. */
     FILTER_LP_3400_2pol, /**< 2-pole low-pass at 3400 Hz. */
     FILTER_LP_3000_4pol, /**< 4-pole low-pass at 3000 Hz. */
@@ -225,6 +225,7 @@ typedef struct {
     int delay_lp_y[4]; /**< Delay for Y (Q) low-pass in post-Hilbert. */
     int agc_gain; /**< AGC gain factor. */
     int last_angle; /**< Last computed angle for phase difference. */
+    int sample_rate; /**< Sample rate (in Hz). */
 } polar_mod_ctx_t;
 
 /**
@@ -266,7 +267,7 @@ void polar_mod_init(polar_mod_ctx_t *ctx);
  * \param[out] phase_diff_out Pointer to store the phase difference.
  * \return 0 on success, -1 on error (e.g., null pointers or invalid mode).
  */
-int modulation_am_pm(polar_mod_ctx_t *ctx, modulation_t modulation, int data, int *ampl_out, int *phase_diff_out);
+int polar_modulator(polar_mod_ctx_t *ctx, modulation_t modulation, int data, int *ampl_out, int *phase_diff_out);
 
 ////////////////////////////////////// INTERNALS //////////////////////////////////////
 
